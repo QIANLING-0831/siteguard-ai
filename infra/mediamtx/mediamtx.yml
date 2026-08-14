@@ -1,0 +1,22 @@
+# SiteGuard AI video gateway. Camera credentials stay in server-side environment variables.
+logLevel: info
+
+api: true
+apiAddress: 127.0.0.1:9997
+
+rtsp: true
+rtspTransports: [tcp]
+
+hls: true
+hlsAddress: :8888
+hlsAllowOrigins: ["http://localhost:3000"]
+
+webrtc: true
+webrtcAddress: :8889
+webrtcAllowOrigins: ["http://localhost:3000"]
+
+pathDefaults:
+  sourceOnDemand: true
+
+# Add real sources through MTX_PATHS_<PATH>_SOURCE so credentials do not enter git.
+paths: {}

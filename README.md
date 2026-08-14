@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SiteGuard AI（筑安智巡）
 
-## Getting Started
+面向工程现场的 AI 安全巡检与隐患整改闭环原型。它不把模型输出直接当成事故或隐患，而是把照片中的可疑情况生成待审核的 `Finding`，交由人员确认后再进入派单、整改、复核和关闭流程。
 
-First, run the development server:
+![SiteGuard AI 现场巡检工作台](docs/blog-assets/01-workbench-overview.png)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 项目解决什么问题
+
+多数视觉识别 Demo 到“检测并画框”就结束了，但工程安全管理还需要明确责任人、整改期限、复核结果和完整审计记录。SiteGuard AI 验证的是一条可落地的小闭环：
+
+```text
+照片上传 / 本机拍摄 / 工地摄像头抓拍
+                    ↓
+       AI 检测画面人员与 PPE 异常
+                    ↓
+      Finding（待人工确认，不等于隐患）
+                    ↓
+        确认为隐患 / 驳回 AI 建议
+                    ↓
+        派发整改 → 提交证据 → 人工复核
+                    ↓
+              关闭并保留审计记录
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 核心功能
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **多来源证据采集**：支持照片上传、本机摄像头拍摄，以及服务端 RTSP 摄像头抓拍。
+- **逐人 PPE 审核**：识别一张照片中的多名人员，逐人展示检测框、模型名称和置信度。
+- **人工确认优先**：AI 只产生 `Finding`；只有人员确认后才能形成 `HazardCase`（隐患）。
+- **完整整改闭环**：覆盖确认、驳回、派单、整改提交、复核通过/退回和关闭。
+- **持久化与审计**：内置 SQLite，保存项目、成员、原始证据、检测结果、整改单、复核和审计事件。
+- **重复证据治理**：根据采集来源、拍摄时间和图像相似度提示疑似重复，由人员决定是否作废。
+- **可替换视觉适配器**：优先调用 Ultralytics YOLOWorld；本地视觉环境不可用时明确回退到 mock 适配器，业务流程仍可演示。
+- **三种界面方案**：通过 `variant=A|B|C` 切换驾驶舱原型，其中 B 方案提供最完整的现场巡检工作台。
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![重复证据与人工审核](docs/blog-assets/02-duplicate-grid-collage.png)
 
-## Learn More
+## 技术架构
 
-To learn more about Next.js, take a look at the following resources:
+| 层次 | 实现 |
+| --- | --- |
+| Web 与 API | Next.js 16、React 19、TypeScript、Tailwind CSS |
+| 领域流程 | Inspection、Finding、HazardCase、RectificationOrder、Verification |
+| 数据持久化 | Node.js 内置 SQLite |
+| 视觉推理 | Python、Ultralytics、Supervision，可替换 adapter |
+| 摄像头接入 | RTSP、MediaMTX（WebRTC/HLS）、FFmpeg 抽帧 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+代码刻意把视觉推理放在 adapter 后面，因此没有安装 Ultralytics 时，领域工作流和界面仍可使用 mock adapter 运行。
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## 快速开始
 
-## Deploy on Vercel
+环境要求：Node.js 20+、pnpm 11+。克隆仓库后运行：
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```powershell
+pnpm install
+Copy-Item .env.example .env.local
+pnpm dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+打开 <http://localhost:3000>，或直接进入功能最完整的 B 方案：
+
+```text
+http://localhost:3000/prototype/dashboard?variant=B
+```
+
+首次启动会自动创建 `.runtime/siteguard.sqlite` 并写入演示数据，不需要单独安装数据库。恢复初始演示状态：
+
+```powershell
+pnpm db:reset
+```
+
+### 可选：真实视觉环境
+
+模型权重不会提交到仓库。请自行准备 Python 虚拟环境与兼容权重，然后用以下命令检查运行时：
+
+```powershell
+pnpm vision:check
+```
+
+### 可选：工地摄像头
+
+RTSP 凭据只应放在服务端 `.env.local` 与视频网关环境变量中，不能放入 `NEXT_PUBLIC_*` 变量。完整接入说明见 [摄像头架构文档](docs/architecture/camera-ingestion.md)。
+
+```powershell
+pnpm camera:gateway:setup
+pnpm camera:gateway
+```
+
+## 验证
+
+```powershell
+pnpm lint
+pnpm build
+pnpm check:b-workflow
+pnpm check:database-workflow
+```
+
+两组工作流检查需要先启动本地网站。
+
+## 演示数据与产品边界
+
+- 演示批次包含 6 份现场证据、52 名画面人员和 17 条待审核 `Finding`。
+- 仓库中的部分现场图是合成演示证据，仅用于界面与流程测试，不是准确率验证集；图片来源见 [`public/demo/ATTRIBUTION.md`](public/demo/ATTRIBUTION.md)。
+- 项目不宣称真实工地识别准确率，也不会自动把 AI 输出确认为隐患。
+- 默认通用模型不代表具备可靠的安全帽或反光背心识别能力；生产化前必须重新评估训练数据、误报漏报、隐私、许可证和现场安全责任。
+- `ObservedPerson` 只是单份证据里的临时检测区域，不做人脸识别，也不跨照片追踪个人身份。
+
+## 更多文档
+
+- [MVP 范围](docs/product/mvp.md)
+- [企业巡检角色与状态流程](docs/product/ppe-inspection-workflow.md)
+- [视觉技术选型](docs/research/vision-stack-options.md)
+- [视觉适配器架构决策](docs/adr/0001-isolate-vision-inference.md)

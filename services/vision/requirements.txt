@@ -1,0 +1,6 @@
+ultralytics==8.4.116
+supervision==0.30.0
+ftfy==6.3.1
+regex==2026.7.19
+wcwidth==0.8.2
+clip @ git+https://github.com/ultralytics/CLIP.git@488e81a6711eea7346872b46ea928b367da8889d

@@ -2,26 +2,37 @@
   "name": "yuanwork",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev",
+    "prototype": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "camera:gateway:setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-mediamtx.ps1",
+    "camera:gateway": "powershell -ExecutionPolicy Bypass -File scripts/start-mediamtx.ps1",
+    "db:reset": "node --experimental-strip-types scripts/db-reset.ts",
+    "check:b-workflow": "powershell -ExecutionPolicy Bypass -File scripts/check-b-workflow.ps1",
+    "check:database-workflow": "powershell -ExecutionPolicy Bypass -File scripts/check-database-workflow.ps1",
+    "vision:check": ".venv\\Scripts\\python.exe services/vision/check_runtime.py"
   },
   "dependencies": {
+    "lucide-react": "^1.30.0",
     "next": "16.3.0",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "recharts": "^3.10.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.13.3",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.0",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5.9.3"
   },
   "packageManager": "pnpm@11.16.0"
 }
