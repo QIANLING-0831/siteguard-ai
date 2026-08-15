@@ -71,11 +71,24 @@ pnpm db:reset
 
 ### 可选：真实视觉环境
 
-模型权重不会提交到仓库。请自行准备 Python 虚拟环境与兼容权重，然后用以下命令检查运行时：
+模型权重不进入 Git 历史。下载脚本会把文件放到程序期望的位置，并校验 SHA-256：
+
+```powershell
+pnpm weights:download
+```
+
+其中：
+
+- `yolov8s-worldv2.pt` 从本项目的 [`model-weights-v1` Release](https://github.com/QIANLING-0831/siteguard-ai/releases/tag/model-weights-v1) 下载，用于实验性的 YOLO-World 开放词汇检测。
+- `weights/clip/ViT-B-32.pt` 从 [`openai/CLIP`](https://github.com/openai/CLIP) 官方代码指定的 OpenAI 下载地址获取；它是可选权重，当前重复证据提示使用 dHash，不依赖该权重。
+
+准备 Python 虚拟环境与依赖后，可以检查视觉运行时：
 
 ```powershell
 pnpm vision:check
 ```
+
+YOLO-World/Ultralytics 权重与软件受其各自许可证约束；用于商业或闭源场景前，请自行核对上游许可。CLIP 权重由 OpenAI 官方公开地址提供。两个下载项都使用上游公布的 SHA-256 校验值验证完整性。
 
 ### 可选：工地摄像头
 

@@ -11,6 +11,7 @@
     "lint": "eslint",
     "camera:gateway:setup": "powershell -ExecutionPolicy Bypass -File scripts/setup-mediamtx.ps1",
     "camera:gateway": "powershell -ExecutionPolicy Bypass -File scripts/start-mediamtx.ps1",
+    "weights:download": "powershell -ExecutionPolicy Bypass -File scripts/download-model-weights.ps1",
     "db:reset": "node --experimental-strip-types scripts/db-reset.ts",
     "check:b-workflow": "powershell -ExecutionPolicy Bypass -File scripts/check-b-workflow.ps1",
     "check:database-workflow": "powershell -ExecutionPolicy Bypass -File scripts/check-database-workflow.ps1",
