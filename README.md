@@ -4,7 +4,7 @@
 
 <p align="center">从照片中的待审核发现，到人工确认、整改和复核，串起工地安全巡检闭环。</p>
 
-<p align="center"><img src="https://img.shields.io/badge/docs-%E4%B8%AD%E6%96%87-2dd4bf?style=flat-square&amp;labelColor=172033" alt="docs: 中文"> <img src="https://img.shields.io/badge/maintainer-QIANLING-0831-2dd4bf?style=flat-square&amp;labelColor=172033" alt="maintainer: QIANLING-0831"> </p>
+<p align="center"><img src="https://img.shields.io/badge/docs-%E4%B8%AD%E6%96%87-2dd4bf?style=flat-square&amp;labelColor=172033" alt="docs: 中文"> <img src="https://img.shields.io/badge/maintainer-QIANLING--0831-2dd4bf?style=flat-square&amp;labelColor=172033" alt="maintainer: QIANLING-0831"> </p>
 
 <p align="center"><a href="#项目解决什么问题">项目解决什么问题</a> &nbsp; · &nbsp; <a href="#核心功能">核心功能</a> &nbsp; · &nbsp; <a href="#技术架构">技术架构</a> &nbsp; · &nbsp; <a href="#快速开始">快速开始</a></p>
 
