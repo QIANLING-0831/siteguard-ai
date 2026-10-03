@@ -1,4 +1,22 @@
-# SiteGuard AI（筑安智巡）
+<p align="center"><img src=".github/readme/banner.svg" alt="SiteGuard AI — 筑安智巡 · 现场巡检工作台" width="100%"></p>
+
+<h1 align="center">SiteGuard AI · 筑安智巡 · 现场巡检工作台</h1>
+
+<p align="center">从照片中的待审核发现，到人工确认、整改和复核，串起工地安全巡检闭环。</p>
+
+<p align="center"><img src="https://img.shields.io/badge/docs-%E4%B8%AD%E6%96%87-2dd4bf?style=flat-square&amp;labelColor=172033" alt="docs: 中文"> <img src="https://img.shields.io/badge/maintainer-QIANLING-0831-2dd4bf?style=flat-square&amp;labelColor=172033" alt="maintainer: QIANLING-0831"> </p>
+
+<p align="center"><a href="#项目解决什么问题">项目解决什么问题</a> &nbsp; · &nbsp; <a href="#核心功能">核心功能</a> &nbsp; · &nbsp; <a href="#技术架构">技术架构</a> &nbsp; · &nbsp; <a href="#快速开始">快速开始</a></p>
+
+---
+
+## 项目概览
+
+| 方向 | 内容 |
+| --- | --- |
+| **证据采集** | 照片、本机拍摄与 RTSP 抓拍 |
+| **逐人审核** | 展示 PPE 检测与模型置信度 |
+| **整改闭环** | 人工确认、派单、证据提交与复核 |
 
 面向工程现场的 AI 安全巡检与隐患整改闭环原型。它不把模型输出直接当成事故或隐患，而是把照片中的可疑情况生成待审核的 `Finding`，交由人员确认后再进入派单、整改、复核和关闭流程。
 
